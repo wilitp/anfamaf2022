@@ -1,4 +1,4 @@
-from math import fabs, inf, tan
+from math import fabs, inf, sqrt, tan
 
 
 def last(arr):
@@ -105,3 +105,40 @@ def raiz_cubica(a):
 a = 9
 print(
     f"Una aproximacion de la raiz cubica de {a} es {raiz_cubica(a)}, cuyo cubo es {raiz_cubica(a)**3}")
+
+# 5
+
+
+def ripf(fun, x0, err, mit):
+    k: int = 0
+    # xh almacena la estimacion para cada iteracion
+    xh = [x0]
+    x = x0+err+1
+
+    while k < mit:
+        x = fun(x0)
+        k += 1
+        xh = xh + [x]
+        if fabs(x0-x) < err:
+            break
+        x0 = x
+
+    return xh
+
+# 6
+
+
+def fun_lab2ej6(x): return 2**(x-1)
+
+
+hx = ripf(fun_lab2ej6, 0.5, 1e-5, 100)
+lst = hx[-1]
+print(
+    f"Una aproximacion de un punto fijo de 2x=2**x en el intervalo [0,1] es {last(hx)}, f({lst})={fun_lab2ej6(lst)}")
+
+hx = ripf(fun_lab2ej6, 1.3, 1e-5, 100)
+lst = hx[-1]
+print(
+    f"Una aproximacion de un punto fijo de 2x=2**x en el intervalo [1,2] es {last(hx)}, f({lst})={fun_lab2ej6(lst)}")
+
+# 7
