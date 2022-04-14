@@ -1,8 +1,10 @@
-from math import fabs, inf, sqrt, tan
+from math import cos, fabs, inf, sqrt, tan, exp
 
 
-def last(arr):
-    return arr[len(arr) - 1]
+def newej(n):
+    print("\n\n")
+    print(f"Ej {n} --------------------------------------------------------]")
+    print("\n")
 
 
 def rbisec(f, I, err, mit):
@@ -39,8 +41,11 @@ def diff_sign(x, y):
 
 
 # 2 Usar rbisec para:
+newej(2)
 
 # a) encontrar la menor solucino positiva de la ecuacion 2.x = tan(x) con un error menor a 10**-5 en menos de 100 iteraciones. Cuantas iteraciones son necesarias cuando comenzamos con el intervalo [0.8, 1.4]/ Usar la siguiente sintaxis:
+
+
 def fun_lab2ej2a(x):
     return 2*x - tan(x)
 
@@ -65,9 +70,11 @@ print(
 
 # 3. Escribir una funion que implemente el metodo de Newton para hallar una raiz de f : R -> R partiendo de un punto inicial x0.
 # La funcion debe llamarse `rnewton`, y tener como entrada (fun, x0, err, mit) donde fun es una funcion que dado x retorna f(x) y f'(x)
-
+newej(3)
 
 # 3 es
+
+
 def rnewton(fun, x0, err, mit):
     hx = []
     hf = []
@@ -99,7 +106,7 @@ def raiz_cubica(a):
     x0 = a/3
     xh, _ = rnewton(fun, x0, 1e-6, 1000)
 
-    return last(xh)
+    return xh[-1]
 
 
 a = 9
@@ -107,6 +114,7 @@ print(
     f"Una aproximacion de la raiz cubica de {a} es {raiz_cubica(a)}, cuyo cubo es {raiz_cubica(a)**3}")
 
 # 5
+newej(5)
 
 
 def ripf(fun, x0, err, mit):
@@ -125,20 +133,90 @@ def ripf(fun, x0, err, mit):
 
     return xh
 
+
 # 6
+newej(6)
 
 
 def fun_lab2ej6(x): return 2**(x-1)
+# La derivada nos da 2**(x-1) * ln(2)
+# Para cualquier x < 1, esta derivada es < 1
+# Ademas, la funcion es exponencial, por lo que tiende a 0(+) cuando x tiende a -Inf.
+# Concluyo entonces que la funcion converge con cualquier x0 en (-Inf,1)
 
 
-hx = ripf(fun_lab2ej6, 0.5, 1e-5, 100)
+hx = ripf(fun_lab2ej6, 1.7, 1e-5, 100)
 lst = hx[-1]
 print(
-    f"Una aproximacion de un punto fijo de 2x=2**x en el intervalo [0,1] es {last(hx)}, f({lst})={fun_lab2ej6(lst)}")
-
-hx = ripf(fun_lab2ej6, 1.3, 1e-5, 100)
-lst = hx[-1]
-print(
-    f"Una aproximacion de un punto fijo de 2x=2**x en el intervalo [1,2] es {last(hx)}, f({lst})={fun_lab2ej6(lst)}")
+    f"Una aproximacion de un punto fijo de 2x=2**x con x0(1.7) en el intervalo [1,2] es {hx[-1]}, f({lst})={fun_lab2ej6(lst)}")
+print("Concluyo que el metodo converge con x0 en (-Inf, 1)")
 
 # 7
+newej(7)
+
+
+def fun_lab2ej7bisec(x):
+    # funcion de la que buscar una raiz
+    def ec(y): return y - exp(-((1-x*y)**2))
+
+    hy, _ = rbisec(ec, [0, 2], 1e-5, 200)
+    return hy[-1]
+
+
+print(f"u(0.7)={fun_lab2ej7bisec(0.7)}, segun biseccion")
+
+
+def fun_lab2ej7newton(x):
+    # funcion de la que buscar una raiz
+    def ec(y): return y - exp(-((1-x*y)**2))
+    def ecprim(y): return 1 - 2*exp(-(1-x*y)**2)*(x-(x**2)*y)
+    def f(y): return (ec(y), ecprim(y))
+
+    # Al despejar la ecuacion y = e**(-(1-xy)**2),
+    # Obtenemos ln y = -((1-xy)**2), osea que ln y<0
+    # Por lo tanto y esta entre 0 y 1.
+    # Uso entonces y0 = 0.5
+
+    y0 = 0.5
+    hy, _ = rnewton(f, y0, 1e-5, 200)
+    return hy[-1]
+
+
+print(f"u(0.7)={fun_lab2ej7newton(0.7)}, segun Newton")
+
+
+def fun_lab2ej7ipf(x):
+    # funcion de la que buscar una raiz
+    def ec(y): return exp(-((1-x*y)**2))
+
+    # Al despejar la ecuacion y = e**(-(1-xy)**2),
+    # Obtenemos ln y = -((1-xy)**2), osea que ln y<0
+    # Por lo tanto y esta entre 0 y 1.
+    # Uso entonces y0 = 0.5
+
+    y0 = 0.5
+    hy = ripf(ec, y0, 1e-5, 200)
+    return hy[-1]
+
+
+print(f"u(0.7)={fun_lab2ej7ipf(0.7)}, segun Iteracion de punto fijo")
+
+newej(8)
+# Encontrar el minimo de tan(x)/x**2 en el intervalo (0, pi/2) usando el metodo de Newton
+# para encontrar una raiz de su derivada
+
+
+def derivadafea(x): return (x+x*tan(x)**2-2*tan(x))/x**3
+
+
+def derivadafea2(x): return 2*(x**2*(1/cos(x))**2 *
+                               tan(x)-2*x*(1/cos(x))**2+3*tan(x))/x**4
+
+
+def ffea(x): return (derivadafea(x), derivadafea2(x))
+
+
+hx, _ = rnewton(ffea, 1.5, 1e-5, 200)
+
+print(
+    f"El minimo de la funcion entre 0 y medio pi es {hx[-1]}, segun el metodo de Newton")
