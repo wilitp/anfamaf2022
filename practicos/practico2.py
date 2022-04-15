@@ -220,3 +220,19 @@ hx, _ = rnewton(ffea, 1.5, 1e-5, 200)
 
 print(
     f"El minimo de la funcion entre 0 y medio pi es {hx[-1]}, segun el metodo de Newton")
+
+
+newej(9)
+
+
+# Funcion que da 0 cuando el diametro del las aspas es el necesario para
+# tener un output de 500W
+def fun_lab2ej9(d): return (d**2)*(296.29629629629636) - 500
+def fun_lab2ej9prim(d): return 2*d*(296.29629629629636)
+def f(x): return (fun_lab2ej9(x), fun_lab2ej9prim(x))
+
+
+hx, _ = rnewton(f, 1.3, 1e-5, 200)
+
+print(
+    f"Es necesario una velocidad de {hx[-1]} para tener 500W de output segun el metodo de Newton")
