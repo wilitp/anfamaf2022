@@ -52,7 +52,8 @@ def fun_lab2ej2a(x):
 
 hx, hy = rbisec(fun_lab2ej2a, [0.8, 1.4], 1e-5, 100)
 
-print(f"2.a: Hicieron falta {len(hx)} iteraciones")
+print(
+    f"2.a: Hicieron falta {len(hx)} iteraciones, para encontrar la aproximacion {hx[-1]}")
 
 
 # b) Encontrar una aproximacion a raiz de tres con un error menor a 10**-5, para esto considere la funcion x -> x**2 -3
@@ -63,7 +64,7 @@ def fun_lab2ej2b(x):
 
 hx, hy = rbisec(fun_lab2ej2b, [1.4, 2], 1e-5, 20)
 print(
-    f"2.b: Usando el intervalo [1.4, 2], hicieron falta {len(hx)} iteraciones para aproximar raiz de tres con un error menor a 10**-5: {hx[len(hx)-1]}**2={hx[len(hx)-1]**2}")
+    f"2.b: Usando el intervalo [1.4, 2], hicieron falta {len(hx)} iteraciones para aproximar raiz de tres con un error menor a 10**-5: {hx[-1]} al cuadrado es {hx[-1]**2}")
 
 # c) Graficar conjuntamente f y los pares (x_k, f(x_k)) para las dos funciones anteriores y
 # con al menos dos intervalos iniciales distintos para cada una.
