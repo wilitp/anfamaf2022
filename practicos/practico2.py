@@ -1,4 +1,5 @@
 from math import cos, fabs, inf, sqrt, tan, exp
+import matplotlib.pyplot as plt
 
 
 def newej(n):
