@@ -1,6 +1,6 @@
 from math import cos, fabs, inf, sqrt, tan, exp
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 def newej(n):
     print("\n\n")
@@ -44,6 +44,8 @@ def diff_sign(x, y):
 # 2 Usar rbisec para:
 newej(2)
 
+fig, ax = plt.subplots()
+
 # a) encontrar la menor solucino positiva de la ecuacion 2.x = tan(x) con un error menor a 10**-5 en menos de 100 iteraciones. Cuantas iteraciones son necesarias cuando comenzamos con el intervalo [0.8, 1.4]/ Usar la siguiente sintaxis:
 
 
@@ -51,7 +53,11 @@ def fun_lab2ej2a(x):
     return 2*x - tan(x)
 
 
-hx, hy = rbisec(fun_lab2ej2a, [0.8, 1.4], 1e-5, 100)
+hx, hy = rbisec(fun_lab2ej2a, [0.8, 1.4], 1e-5, 20)
+
+x = np.linspace(0, 2, 200)
+ax.plot(hx, hy, '*', label="Estimaciones ej2a")
+ax.plot(x, 2*x - np.tan(x), label="Fun ej2a")
 
 print(
     f"2.a: Hicieron falta {len(hx)} iteraciones, para encontrar la aproximacion {hx[-1]}")
@@ -67,8 +73,12 @@ hx, hy = rbisec(fun_lab2ej2b, [1.4, 2], 1e-5, 20)
 print(
     f"2.b: Usando el intervalo [1.4, 2], hicieron falta {len(hx)} iteraciones para aproximar raiz de tres con un error menor a 10**-5: {hx[-1]} al cuadrado es {hx[-1]**2}")
 
-# c) Graficar conjuntamente f y los pares (x_k, f(x_k)) para las dos funciones anteriores y
-# con al menos dos intervalos iniciales distintos para cada una.
+ax.plot(hx, hy, '*', label="Estimaciones ej2b")
+ax.plot(x, x**2 - 3, label="Fun ej2b")
+ax.set_xlabel("Eje x")
+ax.set_ylabel("Eje y")
+ax.legend()
+plt.show()
 
 # 3. Escribir una funion que implemente el metodo de Newton para hallar una raiz de f : R -> R partiendo de un punto inicial x0.
 # La funcion debe llamarse `rnewton`, y tener como entrada (fun, x0, err, mit) donde fun es una funcion que dado x retorna f(x) y f'(x)
@@ -86,12 +96,11 @@ def rnewton(fun, x0, err, mit):
         x, xprim = fun(x_1)
         xk = x_1 - x/xprim
         hx += [xk]
-        hf += [fun(x0)[0]]
+        hf += [fun(xk)[0]]
         if fabs(xk-x_1)/fabs(xk) < err or fabs(fun(xk)[0]) < err or k > mit:
             break
         x_1 = xk
 
-    print(hx)
     return (hx, hf)
 
 
@@ -147,7 +156,7 @@ def fun_lab2ej6(x): return 2**(x-1)
 # Concluyo entonces que la funcion converge con cualquier x0 en (-Inf,1)
 
 
-hx = ripf(fun_lab2ej6, 1.7, 1e-5, 100)
+hx = ripf(fun_lab2ej6, 2.0000001, 1e-5, 100)
 lst = hx[-1]
 print(
     f"Una aproximacion de un punto fijo de 2x=2**x con x0(1.7) en el intervalo [1,2] es {hx[-1]}, f({lst})={fun_lab2ej6(lst)}")
@@ -218,7 +227,8 @@ def derivadafea2(x): return 2*(x**2*(1/cos(x))**2 *
 def ffea(x): return (derivadafea(x), derivadafea2(x))
 
 
-hx, _ = rnewton(ffea, 1.5, 1e-5, 200)
+hx, hf = rnewton(ffea, 1.5, 1e-5, 200)
+print(hf)
 
 print(
     f"El minimo de la funcion entre 0 y medio pi es {hx[-1]}, segun el metodo de Newton")
