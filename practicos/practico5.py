@@ -26,7 +26,7 @@ def trap(fun, a: float, b: float, N: int):
     h = (b-a)/N
     sx0 = fun(a) + fun(b)
     sx = 0
-    x = 0
+    x = a
     for _ in range(1, N):
         x = x+h
         sx += fun(x)
@@ -35,7 +35,7 @@ def trap(fun, a: float, b: float, N: int):
 def pm(fun, a: float, b: float, N: int):
     h = (b-a)/N
     sx = 0
-    x = 0
+    x = a
     for _ in range(0, N+1, 2):
         x += 2*h
         sx += fun(x)
